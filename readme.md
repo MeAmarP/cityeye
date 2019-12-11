@@ -1,11 +1,12 @@
 ## Problem Statement:
-    Using Computer Vision techniques, Count the CARS and BIKES moving in each direction of the lane
+    Using Computer Vision techniques, Count the CARS/BIKES moving in each direction of the lane
 
 ### Approch:
-1. Read copy of Video, convert to gray-scale/Binarise. [**Image pre-processing**]
+1. Capture Video data as frames
 2. Understand Background and Foreground. [**Image Segmentation**]
-3. Perform or detect CAR & BIKE in an Img frame. [**Object Detection**]
-4. Perform tracking of the CAR & BIKE [**Object Tracking**] 
+3. Perform necessary filtering and morphing to get better blob/object detection. 
+4. Perform or detect CAR/BIKE in an Img frame. [**Object Detection**]
+5. Perform tracking of the object, check if crosses defined hypothetical border to keep count. [**Object Tracking**] 
 
 
 #### Refer:
