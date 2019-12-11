@@ -8,25 +8,31 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 
-path_to_img = 'img_sample.png'
+path_to_img = 'vlcsnap_hwy_traffic.png'
 
-main_img = cv2.imread(path_to_img)
-main_img = cv2.medianBlur(main_img,5)
-#img_fltr = cv2.GaussianBlur(main_img,(5,5),0)
+img = cv2.imread(path_to_img)
+main_img = cv2.GaussianBlur(img, (5, 5), 0)
 
-main_img = cv2.cvtColor(img_fltr,cv2.COLOR_BGR2GRAY)
+
+main_img = cv2.cvtColor(main_img,cv2.COLOR_BGR2GRAY)
 _,bin_img = cv2.threshold(main_img,
-                        125,255,
-                        cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+                        127,255,
+                        cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
 
 
-kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(3,3))
-morph_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel)
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
 
-cv2.imshow('Img', morph_img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+
+bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_CLOSE, kernel,2)
+bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel,2)
+nlabels, labels, stats, centroids = cv2.connectedComponentsWithStats(bin_img)
+
+#for val in centroids:
+#cv2.putText(img,"*",(centroids[:,0].astype(int),centroids[:,1].astype(int)),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0))
+centroids
+cv2.imshow('Img', img)
+
 
 
 
