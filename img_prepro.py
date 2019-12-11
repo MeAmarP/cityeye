@@ -13,25 +13,25 @@ path_to_img = 'vlcsnap_hwy_traffic.png'
 img = cv2.imread(path_to_img)
 main_img = cv2.GaussianBlur(img, (5, 5), 0)
 
-
 main_img = cv2.cvtColor(main_img,cv2.COLOR_BGR2GRAY)
 _,bin_img = cv2.threshold(main_img,
-                        127,255,
+                        80,255,
                         cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
 
 
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
-
-
-bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_CLOSE, kernel,2)
-bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel,2)
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(3,3))
+bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_CLOSE, kernel)
+bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_OPEN, kernel)
+bin_img = cv2.morphologyEx(bin_img, cv2.MORPH_DILATE, kernel)
 nlabels, labels, stats, centroids = cv2.connectedComponentsWithStats(bin_img)
 
-#for val in centroids:
-#cv2.putText(img,"*",(centroids[:,0].astype(int),centroids[:,1].astype(int)),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0))
-centroids
-cv2.imshow('Img', img)
+for idx,val in enumerate(centroids):   
+    cv2.putText(img,
+                str(stats[idx,4]),
+                (int(val[0]),int(val[1])),
+                cv2.FONT_HERSHEY_SIMPLEX,0.3,(0,255,0))
+cv2.imshow('Img', bin_img)
 
 
 
