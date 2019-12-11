@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 import time
 
-path_to_video = 'F:/Dataset/forFatNinja/cityeye/trim_HwayTraffic.mp4'
+path_to_video = 'vids/trim_Hway_traffic.mp4'
 cap = cv2.VideoCapture(path_to_video)
 
 
@@ -26,17 +26,26 @@ print("Frame Width: ",cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 
 start_time = time.time()
 fgbg = cv2.bgsegm.createBackgroundSubtractorCNT()
-kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(3,3))
 
 while cap.isOpened():
     ret, frame = cap.read()
     if ret == True:
-        frame = cv2.medianBlur(frame,5)
+        frame = cv2.GaussianBlur(frame, (5, 5), 0)
         fgmask = fgbg.apply(frame)        
         fgmask = cv2.morphologyEx(fgmask, cv2.MORPH_CLOSE, kernel)
         fgmask = cv2.morphologyEx(fgmask, cv2.MORPH_OPEN, kernel)
+        fgmask = cv2.morphologyEx(fgmask, cv2.MORPH_DILATE, kernel)
+        nlabels, _, stats, centroids = cv2.connectedComponentsWithStats(fgmask)
+        centroids = np.reshape(centroids[~np.isnan(centroids)],(-1,2))
+        for obj_xy in centroids:
+            cv2.putText(frame,'*',(int(obj_xy[0]),int(obj_xy[1]) ),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0))
+        
+        
 #        cv2.imshow('ProcessedVideo', fgmask)
-        cv2.imshow('Video', cv2.hconcat([frame,fgmask]))
+        cv2.imshow('OGVideo', frame)
+        cv2.imshow('Video', fgmask)
+        
         
 #        cv2.imshow('OriginalVideo', frame)
         k = cv2.waitKey(30) & 0xff
