@@ -39,15 +39,8 @@ while cap.isOpened():
         nlabels, _, stats, centroids = cv2.connectedComponentsWithStats(fgmask)
         centroids = np.reshape(centroids[~np.isnan(centroids)],(-1,2))
         for obj_xy in centroids:
-            cv2.putText(frame,'*',(int(obj_xy[0]),int(obj_xy[1]) ),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,255,0))
-        
-        
-#        cv2.imshow('ProcessedVideo', fgmask)
-        cv2.imshow('OGVideo', frame)
+            cv2.putText(frame,'*',(int(obj_xy[0]),int(obj_xy[1]) ),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,255))
         cv2.imshow('Video', fgmask)
-        
-        
-#        cv2.imshow('OriginalVideo', frame)
         k = cv2.waitKey(30) & 0xff
         if k == 27:
             break
