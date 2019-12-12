@@ -6,7 +6,8 @@
 2. Understand Background and Foreground. [**Image Segmentation**]
 3. Perform necessary filtering and morphing to get better blob/object detection. 
 4. Perform or detect CAR/BIKE in an Img frame. [**Object Detection**]
-5. Perform tracking of the object, check if crosses defined hypothetical border to keep count. [**Object Tracking**] 
+5. Apply rule based filter(Area/length) to detect/track ONLY vehicles in a given frame.
+6. Perform tracking of the object, check if crosses defined hypothetical border to keep count. [**Object Tracking**] 
 
 
 #### Refer:
