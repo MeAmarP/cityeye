@@ -38,9 +38,13 @@ while cap.isOpened():
         fgmask = cv2.morphologyEx(fgmask, cv2.MORPH_DILATE, kernel)
         nlabels, _, stats, centroids = cv2.connectedComponentsWithStats(fgmask)
         centroids = np.reshape(centroids[~np.isnan(centroids)],(-1,2))
-        for obj_xy in centroids:
-            cv2.putText(frame,'*',(int(obj_xy[0]),int(obj_xy[1]) ),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,255))
-        cv2.imshow('Video', fgmask)
+        for idx,obj_xy in enumerate(centroids):            
+            if stats[idx,4] > 400 and stats[idx,4] < 5000 :
+                centr_str = str(obj_xy[0].astype(np.uint32))+","+str(obj_xy[1].astype(np.uint32))
+                area_str = str(stats[idx,4])
+                cv2.putText(frame,area_str,(int(obj_xy[0]),int(obj_xy[1]+20)),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,240,0))                
+                cv2.putText(frame,centr_str,(int(obj_xy[0]),int(obj_xy[1])),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,255))
+        cv2.imshow('Video', frame)
         k = cv2.waitKey(30) & 0xff
         if k == 27:
             break
