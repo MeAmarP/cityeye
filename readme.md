@@ -12,5 +12,4 @@
 
 #### Refer:
 1. https://docs.opencv.org/4.1.0/d2/d55/group__bgsegm.html
-2. https://www.geeksforgeeks.org/background-subtraction-in-an-image-using-concept-of-running-average/
-3. **https://docs.opencv.org/4.1.0/de/dca/classcv_1_1bgsegm_1_1BackgroundSubtractorCNT.html#details**
+2. **https://docs.opencv.org/4.1.0/de/dca/classcv_1_1bgsegm_1_1BackgroundSubtractorCNT.html#details**
