@@ -24,6 +24,31 @@ print("Frame Width: ",cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 
 
 
+#===============================================================================
+def applyPreprocessing(frame,bgsegm_inst,kern_len):
+    """
+    """    
+    proc_frame = cv2.GaussianBlur(frame, (5, 5), 0)    
+    #Apply background degmentation algo.
+    proc_frame = bgsegm_inst.apply(proc_frame)    
+    # Apply Morphological ops tO get clean and noise free blob/object detection
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(kern_len,kern_len))
+    proc_frame = cv2.morphologyEx(proc_frame, cv2.MORPH_CLOSE, kernel)
+    proc_frame = cv2.morphologyEx(proc_frame, cv2.MORPH_OPEN, kernel)
+    proc_frame = cv2.morphologyEx(proc_frame, cv2.MORPH_DILATE, kernel)    
+    return proc_frame
+
+def findObjectProps():
+    """
+    """
+    # Extract connected objects and its Centroid[x,y], stats[BBox(0:3),Area(4)]
+    _, _, stats, centroids = cv2.connectedComponentsWithStats(fgmask)        
+    centroids = np.reshape(centroids[~np.isnan(centroids)],(-1,2))
+    return stats, centroids.astype(np.uint16)
+
+def detectVehicles():
+    return
+
 
 start_time = time.time()
 fgbg = cv2.bgsegm.createBackgroundSubtractorCNT()
@@ -32,7 +57,6 @@ left_lane_cnt = 0
 right_lane_cnt = 0
 
 #OutVideo = cv2.VideoWriter('cityeye_action.mp4',cv2.VideoWriter_fourcc(*'H264'),30,(640,360))
-
 while cap.isOpened():
     ret, frame = cap.read()
     if ret == True:
