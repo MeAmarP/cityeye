@@ -11,6 +11,8 @@
 7. Use shape stats(Height to width ratio) extracted from contours To classify between TRUCKS, CARS and BIKE.
 
 
+### Output Video
+**https://github.com/MeAmarP/cityeye/blob/master/cityeye_action.mp4**
 
 
 #### Refer:
